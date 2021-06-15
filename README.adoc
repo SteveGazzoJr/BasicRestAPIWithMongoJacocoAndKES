@@ -3,8 +3,13 @@ This is just a play project for me to learn more about developing rest APIs from
 ToDo
 
 <s>Implement controllers</s>
+
 <s>Implement MongoDB backend</s>
+
 <s>Add tests for above</s>
+
 Migrate from local mongo to hosted mongo
+
 Implement KES streaming
+
 Create second project to consume KES stream
