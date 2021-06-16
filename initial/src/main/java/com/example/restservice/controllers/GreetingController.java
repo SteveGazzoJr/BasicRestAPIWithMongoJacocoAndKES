@@ -7,6 +7,7 @@ import com.example.restservice.dataaccess.daos.NameDAO;
 import com.example.restservice.exceptions.NameConflictException;
 import com.example.restservice.exceptions.NotFoundException;
 import com.example.restservice.exceptions.SaveFailedException;
+import com.example.restservice.managers.NamesManager;
 import com.example.restservice.models.GetNameDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,17 +20,17 @@ import org.springframework.web.bind.annotation.*;
 public class GreetingController {
 
     @Autowired
-    private NameRepository nameRepository;
+    private NamesManager namesManager;
 
-    public GreetingController(NameRepository nameRepository) {
-        this.nameRepository = nameRepository;
+    public GreetingController(NamesManager namesManager) {
+        this.namesManager = namesManager;
     }
 
     @GetMapping("/getNameById")
     public @ResponseBody GetNameDTO getNameById(@RequestParam(value = "id") String id) {
-        Optional<NameDAO> nameDAO = nameRepository.findById(id);
-        if (nameDAO.isPresent()) {
-            return new GetNameDTO(nameDAO.get().getId(), nameDAO.get().getName());
+        NameDAO nameDAO = namesManager.getNameById(id);
+        if (nameDAO != null) {
+            return new GetNameDTO(nameDAO.getId(), nameDAO.getName());
         }
 
        throw new NotFoundException();
@@ -37,7 +38,7 @@ public class GreetingController {
 
     @GetMapping("/getIdByName")
     public @ResponseBody GetNameDTO getIdByName(@RequestParam(value = "name") String name) {
-        final NameDAO nameDAO = nameRepository.getByName(name);
+        final NameDAO nameDAO = namesManager.getByName(name);
         if (nameDAO != null) {
             return new GetNameDTO(nameDAO.getId(), nameDAO.getName());
         }
@@ -48,15 +49,15 @@ public class GreetingController {
     @PostMapping("/setName")
     public @ResponseBody GetNameDTO setName(@RequestParam String name){
 
-        final NameDAO get = nameRepository.getByName(name);
-        if(get != null) throw new NameConflictException();
+        final NameDAO existingName = namesManager.getByName(name);
+        if(existingName != null) throw new NameConflictException();
 
-        NameDAO nameDAO = new NameDAO();
-        nameDAO.setName(name);
+        NameDAO newName = new NameDAO();
+        newName.setName(name);
 
-        final NameDAO save = nameRepository.save(nameDAO);
-        if(save != null) {
-            return new GetNameDTO(save.getId(), save.getName());
+        final NameDAO savedName = namesManager.save(newName);
+        if(savedName != null) {
+            return new GetNameDTO(savedName.getId(), savedName.getName());
         }
 
         throw new SaveFailedException();

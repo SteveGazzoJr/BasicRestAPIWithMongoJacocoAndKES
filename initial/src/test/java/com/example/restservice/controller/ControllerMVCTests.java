@@ -9,13 +9,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.restservice.dataaccess.dal.NameRepository;
 import com.example.restservice.dataaccess.daos.NameDAO;
+import com.example.restservice.managers.NamesManager;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -27,6 +30,9 @@ public class ControllerMVCTests {
 
     @MockBean
     private NameRepository nameRepository;
+
+    @SpyBean
+    private NamesManager namesManager;
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,6 +48,7 @@ public class ControllerMVCTests {
                 .andReturn();
 
         verify(nameRepository, Mockito.times(1)).findById(any());
+        verify(namesManager, times(1)).getNameById(any());
     }
 
     @Test
@@ -53,6 +60,7 @@ public class ControllerMVCTests {
                 .andExpect(content().string(""))
                 .andReturn();
 
+        verify(namesManager, times(1)).getNameById(any());
         verify(nameRepository, Mockito.times(1)).findById(any());
     }
 
@@ -65,6 +73,7 @@ public class ControllerMVCTests {
                 .andExpect(content().string("{\"id\":\"id\",\"name\":\"name\"}"))
                 .andReturn();
 
+        verify(namesManager, times(1)).getByName(any());
         verify(nameRepository, Mockito.times(1)).getByName(any());
     }
 
@@ -76,7 +85,7 @@ public class ControllerMVCTests {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(""))
                 .andReturn();
-
+        verify(namesManager, times(1)).getByName(any());
         verify(nameRepository, Mockito.times(1)).getByName(any());
     }
 
@@ -90,7 +99,8 @@ public class ControllerMVCTests {
                 .andExpect(status().isConflict())
                 .andExpect(content().string(""))
                 .andReturn();
-
+        verify(namesManager, times(1)).getByName(any());
+        verify(nameRepository, times(1)).getByName(any());
         verify(nameRepository, Mockito.times(0)).save(any());
     }
 
@@ -104,7 +114,8 @@ public class ControllerMVCTests {
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"id\":\"Some\",\"name\":\"Thing\"}"))
                 .andReturn();
-
+        verify(namesManager, times(1)).getByName(any());
+        verify(nameRepository, times(1)).getByName(any());
         verify(nameRepository, Mockito.times(1)).save(any());
     }
 
