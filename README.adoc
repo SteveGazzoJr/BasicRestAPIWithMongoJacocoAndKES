@@ -10,6 +10,6 @@ ToDo
 
 Migrate from local mongo to hosted mongo
 
-Implement KES streaming
+Implement KES streaming - use MapStruct to map DAOs to CDMs
 
 Create second project to consume KES stream
