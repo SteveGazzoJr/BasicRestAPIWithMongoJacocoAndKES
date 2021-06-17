@@ -52,8 +52,7 @@ public class GreetingController {
         final NameDAO existingName = namesManager.getByName(name);
         if(existingName != null) throw new NameConflictException();
 
-        NameDAO newName = new NameDAO();
-        newName.setName(name);
+        NameDAO newName = new NameDAO(null, name);
 
         final NameDAO savedName = namesManager.save(newName);
         if(savedName != null) {
