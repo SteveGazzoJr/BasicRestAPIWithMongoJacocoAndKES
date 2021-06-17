@@ -8,8 +8,6 @@ ToDo
 
 <s>Add tests for above</s>
 
-Migrate from local mongo to hosted mongo
+Figure out how to get docker to autocreate my environment
 
-Implement KES streaming - use MapStruct to map DAOs to CDMs
-
-Create second project to consume KES stream
+<s>Implement KES consumer<s>
