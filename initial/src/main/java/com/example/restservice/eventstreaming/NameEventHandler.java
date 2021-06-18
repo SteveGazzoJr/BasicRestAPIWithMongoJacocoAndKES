@@ -29,14 +29,15 @@ public class NameEventHandler implements
         this.consumerFactory = consumerFactory;
     }
 
-    public void listenForEvent() {
+    public void listenForKafkaEvent() {
 
         KafkaConsumer consumer = consumerFactory.getConsumer();
         ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
-        while(records != null && !records.isEmpty()) {
+        while(true) {
             for (ConsumerRecord<String, String> record : records) {
                 namesManager.save(new NameDAO(null, record.value()));
+                System.out.println(record.value());
             }
             records = consumer.poll(Duration.ofMillis(100));
         }
@@ -44,6 +45,6 @@ public class NameEventHandler implements
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        listenForEvent();
+        listenForKafkaEvent();
     }
 }

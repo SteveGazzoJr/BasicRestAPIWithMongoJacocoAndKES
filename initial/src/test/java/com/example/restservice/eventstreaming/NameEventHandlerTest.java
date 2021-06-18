@@ -7,11 +7,8 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +42,7 @@ class NameEventHandlerTest {
         when(kafkaConsumer.poll(any())).thenReturn(consumerRecords).thenReturn(null);
         doReturn(kafkaConsumer).when(consumerFactory).getConsumer();
 
-        nameEventHandler.listenForEvent();
+        nameEventHandler.listenForKafkaEvent();
         verify(namesManager, times(1)).save(any());
     }
 
@@ -62,7 +59,7 @@ class NameEventHandlerTest {
         when(kafkaConsumer.poll(any())).thenReturn(null);
         doReturn(kafkaConsumer).when(consumerFactory).getConsumer();
 
-        nameEventHandler.listenForEvent();
+        nameEventHandler.listenForKafkaEvent();
         verify(namesManager, times(0)).save(any());
     }
 }
