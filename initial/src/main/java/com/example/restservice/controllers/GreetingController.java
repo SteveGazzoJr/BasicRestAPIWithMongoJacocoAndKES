@@ -48,6 +48,7 @@ public class GreetingController {
     }
 
     @PostMapping("/setName")
+    @CrossOrigin(origins = "*")
     public @ResponseBody
     ReturnNameAndIDDTO setName(@RequestBody SetNameDTO setNameDTO){
 
