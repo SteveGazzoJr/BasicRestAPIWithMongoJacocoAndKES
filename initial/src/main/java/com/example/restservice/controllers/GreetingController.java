@@ -26,6 +26,7 @@ public class GreetingController {
     }
 
     @PostMapping("/getNameById")
+    @CrossOrigin(origins = "*")
     public @ResponseBody
     ReturnNameAndIDDTO getNameById(@RequestBody GetNameByIdDTO getNameByIdDTO) {
         NameDAO nameDAO = namesManager.getNameById(getNameByIdDTO.getId());
@@ -37,6 +38,7 @@ public class GreetingController {
     }
 
     @PostMapping("/getIdByName")
+    @CrossOrigin(origins = "*")
     public @ResponseBody
     ReturnNameAndIDDTO getIdByName(@RequestBody GetIdByNameDTO getIdByNameDTO) {
         final NameDAO nameDAO = namesManager.getByName(getIdByNameDTO.getName());
