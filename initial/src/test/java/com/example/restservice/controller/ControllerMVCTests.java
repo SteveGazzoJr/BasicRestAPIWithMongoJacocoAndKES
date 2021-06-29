@@ -50,7 +50,7 @@ public class ControllerMVCTests {
     @Test
     public void when_GetNameCalled_WithValidID_Then_ResponseIsOK_RepoIsCalled_And_IdAndNameAreReturned() throws Exception {
         doReturn((java.util.Optional.of(new NameDAO("id", "name")))).when(nameRepository).findById(any());
-        MvcResult result = this.mockMvc
+        this.mockMvc
                 .perform(post("/getNameById")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ public class ControllerMVCTests {
     @Test
     public void when_GetNameCalled_WithInvalidID_Then_ResponseIsNotFound_RepoIsCalled_And_NothingIsReturned() throws Exception {
         doReturn(Optional.empty()).when(nameRepository).findById(any());
-        MvcResult result = this.mockMvc
+        this.mockMvc
                 .perform(post("/getNameById")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -82,7 +82,7 @@ public class ControllerMVCTests {
     @Test
     public void when_GetIdCalled_WithValidName_Then_ResponseIsOK_RepoIsCalled_And_IdAndNameAreReturned() throws Exception {
         doReturn(new NameDAO("id", "name")).when(nameRepository).getByName(any());
-        MvcResult result = this.mockMvc
+        this.mockMvc
                 .perform(post("/getIdByName")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -98,7 +98,7 @@ public class ControllerMVCTests {
     @Test
     public void when_GetIdCalled_WithInvalidName_Then_ResponseIsNotFound_And_RepoIsCalled() throws Exception {
         doReturn(null).when(nameRepository).getByName(any());
-        MvcResult result = this.mockMvc
+        this.mockMvc
                 .perform(post("/getIdByName")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -115,7 +115,7 @@ public class ControllerMVCTests {
     public void when_SetNameCalled_AndNameExists_Then_ResponseIsConflict_And_SaveIsNotCalled() throws Exception {
         NameDAO existingName = new NameDAO("Some", "Thing");
         doReturn(existingName).when(nameRepository).getByName(any());
-        MvcResult result = this.mockMvc
+        this.mockMvc
                 .perform(post("/setName")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -133,7 +133,7 @@ public class ControllerMVCTests {
         NameDAO savedName = new NameDAO("Some", "Thing");
         doReturn(null).when(nameRepository).getByName(any());
         doReturn(savedName).when(nameRepository).save(any());
-        MvcResult result = this.mockMvc
+        this.mockMvc
                 .perform(post("/setName")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -151,7 +151,7 @@ public class ControllerMVCTests {
 
         doReturn(null).when(nameRepository).getByName(any());
         doReturn(null).when(nameRepository).save(any());
-        MvcResult result = this.mockMvc
+        this.mockMvc
                 .perform(post("/setName")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
